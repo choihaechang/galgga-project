@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.business">
+<!-- 리절트 맵 정의 -->	
+	<resultMap id="businessResult" type="BusinessVO">
+		<result property="b_id" column="b_id" />
+		<result property="business_no" column="business_no" />
+		<result property="business_id" column="business_id" />
+		<result property="business_pw" column="business_pw" />
+		<result property="business_name" column="business_name" />
+		
+		<result property="phone" column="phone" />
+		<!-- <result property="phone2" column="phone2" />
+		<result property="phone3" column="phone3" />-->
+		
+		<result property="email1" column="email1" />
+		<result property="email2" column="email2" />
+		
+	<!-- <result property="category" column="category" /> -->
+		<result property="company_name" column="company_name" />
+		<result property="company_postNo" column="company_postNo" />
+		<result property="company_address" column="company_address" />
+		<result property="joinDate" column="joinDate" />
+		<result property="join_status" column="join_status" />
+	</resultMap>	
+
+	<select id="login" resultType="businessVO"  parameterType="java.util.Map"  >
+	    <![CDATA[
+			select * from business_tbl
+			 where business_id=#{business_id}		
+			 
+		]]>
+	</select>
+	<select id="selectbusinessList" parameterType="java.util.HashMap" resultMap="businessResult">
+		<![CDATA[
+			select *
+			from business_tbl
+			order by b_id desc
+			limit #{rowStart}, #{perPageNum}
+		]]>
+	</select>
+	
+	<select id="businessListCount" resultType="Integer" >
+		<![CDATA[
+			select count(b_id)
+			from business_tbl
+			where b_id > 0
+		]]>
+	</select>
+	
+	<select id="selectOverlappedID" parameterType="String" resultType="String">
+	   select case count(*) when 1 then 'true'when 0 then 'false' end
+	   from business_tbl
+	   where business_id = #{id}
+	</select>
+	
+  <insert id="insertNewBusiness"  parameterType="BusinessVO">
+  <![CDATA[
+    	insert into business_tbl(business_no,
+    							business_id,
+				 			   business_pw,
+                               business_name,
+                               phone,
+                               email1,
+                               email2,
+                               company_name,
+                               company_postNo,
+                               company_address,
+                               join_status
+                               )
+                               
+							 values(#{business_no},
+							 		#{business_id},
+									#{business_pw},
+									#{business_name},
+                                    #{phone},
+                                    #{email1},
+                                    #{email2},
+                                    #{company_name},
+                                    #{company_postNo},
+                                    #{company_address},
+                                    #{join_status}
+                                    )
+                                    
+                                        
+   ]]>      
+  </insert>
+</mapper>

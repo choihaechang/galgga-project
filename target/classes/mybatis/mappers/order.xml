@@ -1,0 +1,114 @@
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.order">
+<!-- 리절트 맵 정의 -->
+	<resultMap id="orderResult" type="orderVO">
+		<result property="order_no" column="order_no" />
+		<result property="member_id" column="member_id" />
+		<result property="order_name" column="order_name" />
+		<result property="order_phone1" column="order_phone1" />
+		<result property="order_phone2" column="order_phone2" />
+		<result property="order_phone3" column="order_phone3" />
+		<result property="order_email1" column="order_email1" />
+		<result property="order_email2" column="order_email2" />
+		<result property="order_post_num" column="order_post_num" />
+		<result property="order_address" column="order_address" />
+		<result property="receiver_name" column="receiver_name" />
+		<result property="receiver_phone1" column="receiver_phone1" />
+		<result property="receiver_phone2" column="receiver_phone2" />
+		<result property="receiver_phone3" column="receiver_phone3" />
+		<result property="receiver_post_num" column="receiver_post_num" />
+		<result property="receiver_address" column="receiver_address" />
+		<result property="goods_no" column="goods_no" />
+		<result property="goods_name" column="goods_name" />
+		<result property="goods_price" column="goods_price" />
+		<result property="goods_discount" column="goods_discount" />
+		<result property="total_price" column="total_price" />
+		<result property="order_qty" column="order_qty" />
+		<result property="fileType" column="fileType" />
+		<result property="file_name" column="file_name" />
+		<result property="delivery_memo" column="delivery_memo" />
+		<result property="agree" column="agree" />
+		<result property="orderDate" column="orderDate" />
+		<result property="order_pw" column="order_pw" />
+	</resultMap>
+	
+	<select id="selectOrderList" parameterType="java.util.HashMap" resultMap="orderResult">
+		<![CDATA[
+			select *
+			from order_tbl
+			where m_id = #{_id}
+			order by order_no desc
+			limit #{rowStart}, #{perPageNum}
+		]]>
+	</select>
+	
+	<select id="orderListCount" resultType="Integer" >
+		<![CDATA[
+			select count(order_no)
+			from order_tbl
+			where order_no > 0
+		]]>
+	</select>
+	
+	<insert id="insertOrder" parameterType="orderVO"  >
+	    <selectKey resultType="int" keyProperty="order_no" order="AFTER">
+	    	select last_insert_id() 
+	    </selectKey>
+	    <![CDATA[
+	    insert into order_tbl(member_id,
+	    					  order_name,
+	    					  order_phone1,
+	    					  order_phone2,
+	    					  order_phone3,
+	    					  order_email1,
+	    					  order_email2,
+	    					  order_post_num,
+	    					  order_address,
+	    					  receiver_name,
+	    					  receiver_phone1,
+	    					  receiver_phone2,
+	    					  receiver_phone3,
+	    					  receiver_post_num,
+	    					  receiver_address,
+	    					  goods_no,
+	    					  goods_name,
+	    					  goods_price,
+	    					  total_price,
+	    					  order_qty,
+	    					  fileType,
+	    					  file_name,
+	    					  delivery_memo,
+	    					  agree,
+	    					  order_pw)
+	    				values(#{member_id},
+	    						#{order_name},
+	    						#{order_phone1},
+	    						#{order_phone2},
+	    						#{order_phone3},
+	    						#{order_email1},
+	    						#{order_email2},
+	    						#{order_post_num},
+	    					  	#{order_address},
+	    						#{receiver_name},
+	    						#{receiver_phone1},
+	    						#{receiver_phone2},
+	    						#{receiver_phone3},
+	    						#{receiver_post_num},
+	    						#{receiver_address},
+	    						#{goods_no},
+	    						#{goods_name},
+	    						#{goods_price},
+	    						#{total_price},
+	    						#{order_qty},
+	    						#{fileType},
+	    						#{file_name},
+	    						#{delivery_memo},
+	    						#{agree},
+	    						#{order_pw})
+	    ]]>
+	</insert>
+	    						
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.admin">
+<!-- 리절트 맵 정의 -->	
+	<resultMap id="adminResult" type="AdminVO">
+		<result property="Ad_id" column="Ad_id" />
+		<result property="Admin_pw" column="Admin_pw" />
+		<result property="Admin_name" column="Admin_name" />
+		
+		<result property="phone1" column="phone1" />
+		<result property="phone2" column="phone2" />
+		<result property="phone3" column="phone3" />
+		
+		<result property="email" column="email" />
+		
+	</resultMap>	
+
+	<select id="login" resultType="adminVO"  parameterType="java.util.Map"  >
+	    <![CDATA[
+			select * from admin_tbl
+			 where Ad_id=#{Ad_id}		
+			 
+		]]>
+	</select>
+	
+	<select id="selectOverlappedID" parameterType="String" resultType="String">
+	   select case count(*) when 1 then 'true'when 0 then 'false' end
+	   from admin_tbl
+	   where Ad_id = #{id}
+	</select>
+	
+  <insert id="insertNewAdmin"  parameterType="adminVO">
+  <![CDATA[
+    	insert into admin_tbl( Ad_id, Admin_pw, Admin_name, phone1, phone2, phone3, email) 
+    				values ( #{Ad_id}, #{Admin_pw},#{Admin_name}, #{phone1}, #{phone2}, #{phone3}, #{email} )
+                                 
+   ]]>      
+  </insert>
+</mapper>

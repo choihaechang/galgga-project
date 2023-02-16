@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.cart">
+	<!-- 리절트 맵 정의 -->
+	<resultMap id="goodsCartResult" type="GoodsCartVO">
+		<result property="cart_id" column="cart_id" />
+		<result property="goods_no" column="goods_no" />
+		<result property="goods_name" column="goods_name" />
+		<result property="goods_price" column="goods_price" />
+		<result property="goods_discount" column="goods_discount" />
+		<result property="cart_goods_qty" column="cart_goods_qty" />
+		<result property="m_id" column="m_id" />
+		<result property="cart_credate" column="cart_credate" />
+	</resultMap>
+	
+	<resultMap id="goodsResult" type="GoodsVO">
+		<result property="goods_no" column="goods_no" />
+		<result property="goods_cate" column="goods_cate" />
+		<result property="goods_name" column="goods_name" />
+		<result property="file_name" column="file_name" />
+		<result property="goods_brand" column="goods_brand" />
+		<result property="goods_price" column="goods_price" />
+		<result property="goods_discount" column="goods_discount" />	
+		<result property="goods_info" column="goods_info" />
+		<result property="goods_addDate" column="goods_addDate" />
+	</resultMap>
+	
+	<resultMap  id="goodsImgResult" type="goodsImgFileVO">
+		<result property="GoodsImgid" column="GoodsImgid" />
+		<result property="file_name" column="file_name" />
+		<result property="imgAddDate" column="imgAddDate" />
+		<result property="goods_no" column="goods_no" />
+		<result property="fileType" column="fileType" />
+	</resultMap>
+
+	<select id="selectCartList"  parameterType="GoodsCartVO"  resultMap="goodsCartResult"   >
+	    <![CDATA[
+		select *
+		from cartlist_tbl
+		where m_id=#{_id}
+		order by cart_id desc
+		limit #{rowStart}, #{perPageNum}
+		]]>
+	</select>
+
+	<select id="selectGoodsList" resultMap="goodsImgResult" parameterType="int">
+	<![CDATA[
+		    select c.*, g.goods_no, i.fileType, i.file_name
+		    		from cartlist_tbl c, goodslist_tbl g, goods_img_tbl i
+		    		where g.goods_no = i.goods_no
+		    		and i.fileType='main'
+		    		and	c.m_id=#{m_id} group by i.goods_no
+		    
+    	]]>
+	</select>
+	<select id="cartListCount" resultType="Integer" >
+		<![CDATA[
+			select count(cart_id)
+			from cartlist_tbl
+			where cart_id > 0
+		]]>
+	</select>
+	<select id="selectCountInCart" resultType="String" parameterType="GoodsCartVO">
+	    <![CDATA[
+		    select if(count(*), false, true) from cartlist_tbl
+			where goods_no=#{goods_no}
+			  and m_id=#{m_id} 
+
+    	]]>
+	</select>
+	
+	<insert id="insertGoodsInCart" parameterType="GoodsCartVO">
+		<selectKey keyProperty="cart_id" resultType="int" order="AFTER">
+        	select last_insert_id()
+   		</selectKey>
+	    <![CDATA[
+		    	insert into cartlist_tbl(goods_no,
+		    	                           goods_name,
+		    	                           goods_price,
+		    	                           goods_discount,
+		    	                           cart_goods_qty,
+		    	                           m_id)
+		        				 values(#{goods_no},
+    							        #{goods_name},
+    							        #{goods_price},
+    							        #{goods_discount},
+    							        #{cart_goods_qty},
+    							        #{m_id})
+    	]]>
+	</insert>
+
+	<update id="updateCartGoodsQty" parameterType="GoodsCartVO">
+	    <![CDATA[
+			update cartlist_tbl
+			       set cart_goods_qty=#{cart_goods_qty}
+		 	       where m_id=#{m_id}
+			        and goods_no=#{goods_no}
+    	]]>
+	</update>
+	<delete id="deleteCartGoods" parameterType="int">
+	    <![CDATA[
+	      delete from cartlist_tbl
+	      where cart_id=#{cart_id}
+    	]]>
+	</delete>
+
+</mapper>

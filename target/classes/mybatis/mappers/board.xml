@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.board">
+<resultMap id="boardResult" type="boardVO">
+	    <result property="bno" column="bno" />
+		<result property="writer_id" column="writer_id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="writedate" column="writedate" />
+</resultMap>
+
+	<!-- 게시판 글 작성 -->
+	<insert id="insert" >
+	   INSERT INTO BOARD_TBL(   BNO 
+	   					      , writer_id 
+	   					      , TITLE 
+	   					      , CONTENT  )
+	                 VALUES( 	#{bno},
+	                   			#{writer_id},
+	                 		    #{title},
+	                 		    #{content})
+  
+  	 </insert>
+  	 
+  	 <!-- 게시판 목록 -->
+  	 <select id="list" resultType="boardVO">
+		SELECT   BNO
+			   , writer_id 
+			   , TITLE
+			   , WRITEDATE
+		  FROM BOARD_TBL
+		  ORDER BY BNO DESC
+	</select>
+	
+	<!-- 게시판 조회 -->
+	<select id="read" parameterType="int" resultType="boardVO">
+		select BNO
+			  ,writer_id
+			  ,title
+			  ,content
+			  ,writedate
+		from board_tbl
+		where BNO = #{bno}
+	</select>
+	
+	<!-- 게시물 수정 -->
+	<update id="update" parameterType="boardVO">
+		update board_tbl
+			set title = #{title},
+				content = #{content}
+		where BNO = #{bno}		
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete 
+			from board_tbl
+		where BNO = #{bno}
+	</delete>
+	
+    <!-- 게시판 페이지 -->
+	<select id="listPage" resultType="boardVO" parameterType="SearchCriteria">
+		select bno, writer_id, title, content, writedate  
+		from board_tbl 
+		where 1=1
+		<include refid="search"></include>
+		order by bno desc 
+		limit #{rowStart}, 10
+	</select>
+	
+	<!-- 게시물 총 갯수 -->
+	<select id="listCount" resultType="int" parameterType="SearchCriteria">
+			select count(bno)
+			from board_tbl
+			where 1=1
+			<include refid="search"></include>
+			and bno > 0	 
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND TITLE LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'c'.toString()">AND CONTENT LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'w'.toString()">AND WRITER_ID LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'tc'.toString()">AND (TITLE LIKE CONCAT('%',#{keyword},'%')) or (CONTENT LIKE CONCAT('%',#{keyword},'%'))</if>
+		</if>
+	</sql>
+	
+	<resultMap id="qaResult" type="qaVO">
+		<result property="QA_id" column="QA_id" />
+		<result property="lod_id" column="lod_id" />
+		<result property="m_id" column="m_id" />
+		<result property="member_id" column="member_id" />
+		<result property="QA_title" column="QA_title" />
+		<result property="QA_content" column="QA_content" />	
+		<result property="QA_replCon" column="QA_replCon" />
+		<result property="addDate" column="addDate" />
+		<result property="replDate" column="replDate" />
+	</resultMap>
+	
+	<resultMap id="qaReplyResult" type="qaReplyVO">
+		<result property="QA_Reply_id" column="QA_Reply_id" />
+		<result property="QA_id" column="QA_id" />
+		<result property="b_id" column="b_id" />
+		<result property="reply_content" column="reply_content" />
+		<result property="replyDate" column="replyDate" />
+		<result property="lod_id" column="lod_id" />
+		
+	</resultMap>
+	
+	<resultMap id="reviewResult" type="reviewVO">
+		<result property="review_id" column="review_id" />
+		<result property="m_id" column="m_id" />
+		<result property="member_id" column="member_id" />
+		<result property="lod_id" column="lod_id" />
+		<result property="review_title" column="review_title" />
+		<result property="review_content" column="review_content" />
+		<result property="starpoint" column="starpoint" />
+		<result property="review_id" column="review_id" />
+		<result property="unit_id" column="unit_id" />
+		<result property="state" column="state" />
+	</resultMap>
+	
+	<resultMap id="reviewImgResult" type="reviewImgVO">
+		<result property="reviewImg_id" column="reviewImg_id" />
+		<result property="imgName" column="imgName" />
+		<result property="addDate" column="addDate" />
+		<result property="review_id" column="review_id" />
+		
+	</resultMap>
+	
+	<resultMap id="reviewListResult" type="reviewListVO">
+		<result property="review_id" column="review_id" />
+		<result property="m_id" column="m_id" />
+		<result property="member_id" column="member_id" />
+		<result property="lod_id" column="lod_id" />
+		<result property="review_title" column="review_title" />
+		<result property="review_content" column="review_content" />
+		<result property="starpoint" column="starpoint" />
+		<result property="reviewImg_id" column="reviewImg_id" />
+		<result property="imgName" column="imgName" />
+		<result property="imgType" column="imgType" />
+		
+</resultMap>
+	
+	
+	
+	
+	<insert id="addQA" >
+	<selectKey keyProperty="QA_id" resultType="int" order="AFTER"> 
+			select last_insert_id()
+		</selectKey>
+		<![CDATA[
+	   INSERT INTO qa_TBL(
+	   						QA_id,
+	   						lod_id,
+	   						m_id,
+	   						member_id,
+	   						QA_title,
+	   						QA_content
+	   						        )
+	                 VALUES(
+	                 		#{QA_id},
+	   						#{lod_id},
+	   						#{m_id},
+	   						#{member_id},
+	   						#{QA_title},
+	   						#{QA_content} 	
+	                			 )
+   		]]>
+  	 </insert>
+	
+	
+	<select id="selectQA" parameterType="qaVO" resultMap="qaResult">
+	<![CDATA[
+	select * from qa_TBL where lod_id = #{lod_id} order by addDate desc
+	]]>
+	</select>
+	
+	<insert id="addReview" parameterType="java.util.Map">
+	<selectKey keyProperty="review_id" resultType="int" order="AFTER"> 
+			select last_insert_id()
+		</selectKey>
+	<![CDATA[
+			insert into review_tbl(
+									
+									m_id,
+									member_id,
+									lod_id,
+									review_title,
+									review_content,
+									unit_id,
+									starpoint,
+									review_id
+									)
+											values(
+											
+											#{m_id},
+											#{member_id},
+											#{lod_id},
+											#{review_title},
+											#{review_content},
+											#{unit_id},
+											#{starpoint},
+											#{review_id}
+											)
+	]]>
+	</insert>
+	
+	<!-- unit insert시 해당 unit 평균 구해서 unit 평점 바로 업데이트 -->
+	<update id="updateStar">
+			update unit_tbl a set  
+				a.starpoint = (select avg(starpoint) from review_tbl where unit_id = #{unit_id})
+				where unit_id = #{unit_id}
+	</update>
+	
+	<!-- lod 평점 업데이트 구문 상단과 동일함  -->
+	<update id="lodStar">
+			update lod_tbl a set  
+				a.lod_starpoint = (select avg(starpoint) from review_tbl where lod_id =#{lod_id})
+				where lod_id = #{lod_id}
+	</update>
+	
+
+		<insert id="reviewImg" parameterType="java.util.Map">
+		<![CDATA[
+					insert into reviewimg_tbl(
+											reviewImg_id,
+											imgName,
+											addDate,
+											review_id,
+											imgType)
+															values(
+															#{reviewImg_id},
+															#{imgName},
+															#{addDate},
+															#{review_id},
+															#{imgType}		
+															)
+		
+		]]>
+		</insert>
+		
+				
+		
+		<select id="reviewList" parameterType="String" resultMap="reviewResult">
+		<![CDATA[
+				select * from review_tbl where lod_id = #{lod_id} order by addDate desc
+		]]>
+		</select>
+		
+				<select id="reviewImgList" parameterType="String" resultMap="reviewImgResult">
+		<![CDATA[
+				select * from reviewImg_tbl ri, review_tbl r where r.lod_id = #{lod_id} and r.review_id = ri.review_id
+		]]>
+		</select>
+		
+		<delete id="qadelete">
+				<![CDATA[
+					delete from qa_tbl where QA_id = #{QA_id} 
+				]]>
+		</delete>
+		
+		<update id="qaUpdate">
+					update qa_tbl 
+					<set> 
+					<if test= " QA_content != '' and QA_content != null">
+					QA_content = #{QA_content} 
+					</if>
+					where QA_id = #{QA_id} 
+				</set>
+		</update>
+		
+		<!-- 삭제는 이거 삭제 예정 -->
+		<insert id="qaReply" parameterType="java.util.Map">
+			<selectKey keyProperty="QA_Reply_id" resultType="int" order="AFTER"> 
+					select last_insert_id()
+				</selectKey>
+			<![CDATA[
+					insert into qareply_tbl(
+											QA_id,
+											b_id,
+											reply_content,
+											lod_id
+											)
+													values(
+													#{QA_id},
+													#{b_id},
+													#{reply_content},
+													#{lod_id}
+													)
+			]]>
+		</insert>
+		
+		
+		<update id="QARepl">
+		<![CDATA[
+			update qa_tbl  set
+						QA_replCon = #{QA_replCon}, replDate = CURRENT_TIMESTAMP 		
+								where QA_id = #{QA_id}
+			]]>
+		</update>
+
+		<update id="state">
+		<![CDATA[
+			update qa_tbl  set
+						state = "답변 완료" 		
+								where QA_id = #{QA_id}
+			]]>
+		</update>
+		
+		<select id="selectQARepl" parameterType="qaReplyVO" resultMap="qaReplyResult">
+		select * from qareply_tbl where lod_id = #{lod_id}
+		</select>
+	
+	
+		<resultMap id="reviewReplList" type="reviewReplVO">
+				<result property="repl_id" column="repl_id" />
+				<result property="review_id" column="review_id" />
+				<result property="m_id" column="m_id" />
+				<result property="member_id" column="member_id" />
+				<result property="repl_no" column="repl_no" />
+				<result property="repl_content" column="repl_content" />
+				<result property="lod_id" column="lod_id" />
+				<result property="addDate" column="addDate"/>
+		</resultMap>
+		
+		<insert id="reviewReplAdd" parameterType="java.util.Map">
+			<![CDATA[
+				insert into reviewrepl_tbl 
+									(review_id
+									 ,m_id
+									 ,member_id
+									 ,repl_content
+									 ,lod_id					 
+									 ,repl_no
+									 )
+									 values(
+									 #{review_id}
+									 ,#{m_id}
+									 ,#{member_id}
+									 ,#{repl_content}
+									 ,#{lod_id}
+									 ,(select max(a.repl_no)+1 as repl_no from (select ifnull(a.repl_no, 0) as repl_no from reviewrepl_tbl a right outer join(select '') as dumy_tbl on a.review_id = #{review_id}) a)
+                                     )              
+			]]>
+		</insert>
+		
+		<select id="reviewReplList" parameterType="java.util.Map" resultMap="reviewReplList">
+			<![CDATA[
+			select * from reviewrepl_tbl where lod_id = #{lod_id} and review_id = #{review_id} order by repl_no asc
+			]]>
+		</select>
+	
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.admin.goods">
+<!-- 리절트 맵 정의 -->
+	<resultMap id="goodsResult" type="goodsVO">
+		<result property="goods_no" column="goods_no" />
+		<result property="goods_cate" column="goods_cate" />
+		<result property="goods_name" column="goods_name" />
+		<result property="goods_brand" column="goods_brand" />
+		<result property="goods_price" column="goods_price" />
+		<result property="goods_discount" column="goods_discount" />
+		<result property="goods_info" column="goods_info" />
+		<result property="goods_addDate" column="goods_addDate" />
+	</resultMap>
+	<resultMap  id="goodsImgResult" type="goodsImgFileVO">
+		<result property="GoodsImgid" column="GoodsImgid" />
+		<result property="file_name" column="file_name" />
+		<result property="imgAddDate" column="imgAddDate" />
+		<result property="goods_no" column="goods_no" />
+		<result property="fileType" column="fileType" />
+	</resultMap>
+	
+	<select id="selectGoodsList" parameterType="java.util.HashMap" resultMap="goodsResult">
+		<![CDATA[
+			select goods_no, goods_name, goods_price, goods_addDate, goods_discount
+			from goodslist_tbl
+			order by goods_no desc
+			limit #{rowStart}, #{perPageNum}
+		]]>
+	</select>
+	
+	<select id="goodsListCount" resultType="Integer" >
+		<![CDATA[
+			select count(goods_no)
+			from goodslist_tbl
+			where goods_no > 0
+		]]>
+	</select>
+	
+	<insert id="insertNewGoods" parameterType="java.util.Map" >
+		<selectKey keyProperty="goods_no" resultType="int" order="AFTER">
+        	select last_insert_id()
+   		</selectKey>
+		<![CDATA[
+    	insert into goodslist_tbl(goods_no,
+    							goods_cate,
+    							goods_name,
+				 			   goods_brand,
+				 			   goods_price,
+				 			   goods_discount,
+				 			   goods_info
+                               )
+                                
+							 values(#{goods_no},
+								    #{goods_cate},
+									#{goods_name},
+									#{goods_brand},
+                                    #{goods_price},
+                                   	#{goods_discount},
+                                    #{goods_info}
+                                    )
+                                                                            
+   		]]>
+	</insert>
+	
+	<insert id="insertGoodsImgFile" parameterType="goodsImgFileVO" >
+		<selectKey keyProperty="GoodsImgid" resultType="int" order="BEFORE">
+        	select last_insert_id()
+   		</selectKey>
+		<![CDATA[
+		   insert into goods_img_tbl (file_name, goods_no, fileType) values (#{file_name}, #{goods_no}, #{fileType})
+		]]>
+	</insert>
+	
+	<select id="selectgoodsUpdateView" resultMap="goodsResult"   parameterType="String"  >
+	    <![CDATA[
+		    select g.*, i.*
+          	from goodslist_tbl g
+            inner join goods_img_tbl i
+            on g.goods_no = i.goods_no
+		    where i.fileType='main'
+			and g.goods_no=#{goods_no}
+    	]]>
+	</select>
+	<select id="selectGoodsImageFileList" resultMap="goodsImgResult"   parameterType="String"  >
+	    <![CDATA[
+		    select *
+          	from goods_img_tbl 
+		    where goods_no=#{goods_no}
+    	]]>
+	</select>
+	
+	<update id="updateGoodsInfo"  parameterType="java.util.Map" >
+	   update goodslist_tbl
+	    <set> 
+	      <if test=" goods_cate!='' and goods_cate!=null">
+	        goods_cate=#{goods_cate},
+	      </if>
+	      <if test=" goods_name!='' and goods_name!=null">
+	        goods_name=#{goods_name},
+	      </if>
+	      <if test=" goods_brand!='' and goods_brand!=null">
+	        goods_brand=#{goods_brand},
+	      </if>
+	      <if test=" goods_price!='' and goods_price!=null">
+	        goods_price=#{goods_price},
+	      </if>
+	      <if test=" goods_discount!='' and goods_discount!=null">
+	        goods_discount=#{goods_discount},
+	      </if>
+	      <if test=" goods_info!='' and goods_info!=null">
+	        goods_info=#{goods_info}
+	      </if>
+	    </set>
+	    where goods_no=#{goods_no}
+	
+	</update>	
+	<update id="updateGoodsImage" parameterType="goodsImgFileVO">
+		update goods_img_tbl
+		<set>
+			<if test="file_name!='' and file_name!=null">
+				file_name=#{file_name}
+			</if>
+		</set>
+		where goods_no=#{goods_no} and GoodsImgid=#{GoodsImgid}
+	</update>
+	
+	<delete id="goodsDelete" parameterType="int">
+		delete
+		from goodslist_tbl
+		where goods_no=#{goods_no}
+	</delete>
+	<delete id="deleteGoodsImage" parameterType="String">
+	  delete from goods_img_tbl
+	  where GoodsImgid=#{GoodsImgid}
+	</delete>
+	
+	<delete id="deleteGoodsImageByGoodsNo" parameterType="int">
+		delete from goods_img_tbl
+		where goods_no=#{goods_no}
+	</delete>
+</mapper>

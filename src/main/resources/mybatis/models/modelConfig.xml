@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+  <typeAliases>
+
+    <typeAlias type="com.galgga.member.vo.MemberVO" alias="memberVO" />
+    <typeAlias type="com.galgga.business.vo.BusinessVO" alias="businessVO" />
+    <typeAlias type="com.galgga.admin.vo.AdminVO" alias="adminVO" />
+    <typeAlias type="com.galgga.goods.vo.GoodsVO" alias="goodsVO" />
+   	<typeAlias type="com.galgga.goods.vo.GoodsImgFileVO" alias="goodsImgFileVO" />
+    <typeAlias type="com.galgga.board.vo.BoardVO" alias="boardVO" />
+    <typeAlias type="com.galgga.board.vo.Criteria" alias="Criteria" />
+    <typeAlias type="com.galgga.board.vo.SearchCriteria" alias="SearchCriteria" />
+    <typeAlias type="com.galgga.board.vo.ReplyVO" alias="ReplyVO" />
+	<typeAlias type="com.galgga.Lods.vo.LodVO" alias="lodVO"/>
+    <typeAlias type="com.galgga.Lods.vo.LodImgFileVO" alias="lodImgFileVO"/>
+    <typeAlias type="com.galgga.Lods.vo.UnitVO" alias="unitVO"/>
+    <typeAlias type="com.galgga.Lods.vo.UnitImgFileVO" alias="unitImgFileVO"/>
+    <typeAlias type="com.galgga.Lods.vo.CateVO" alias="cateVO"/>
+	<typeAlias type="com.galgga.reserve.vo.ReserveVO" alias="reserveVO"/>
+	<typeAlias type="com.galgga.reserve.vo.BeforeResVO" alias="beforeResVO"/>
+	<typeAlias type="com.galgga.main.vo.MainListVO" alias="mainListVO"/>
+	<typeAlias type="com.galgga.board.vo.QAVO" alias="qaVO" />
+	<typeAlias type="com.galgga.board.vo.QAReplyVO" alias="qaReplyVO" />
+   	<typeAlias type="com.galgga.board.vo.ReviewVO" alias="reviewVO" />
+   	<typeAlias type="com.galgga.board.vo.ReviewImgVO" alias="reviewImgVO" />
+   	<typeAlias type="com.galgga.board.vo.ReviewListVO" alias="reviewListVO" />
+   	<typeAlias type="com.galgga.board.vo.ReviewReplVO" alias="reviewReplVO" />
+   	<typeAlias type="com.galgga.cart.vo.LodCartVO" alias="lodCartVO" />
+   	<typeAlias type="com.galgga.goods.vo.GoodsCateVO" alias="goodsCateVO" />
+   	<typeAlias type="com.galgga.cart.vo.GoodsCartVO" alias="goodsCartVO" />
+   	<typeAlias type="com.galgga.order.vo.OrderVO" alias="orderVO" />
+   	
+   	
+   	<!-- <typeAlias type="com.galgga.order.vo.OrderVO" alias="orderVO" /> -->
+  </typeAliases>
+</configuration>
+
+
+

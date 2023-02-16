@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.lodCart">
+
+		<resultMap id="lodCartResult" type="LodCartVO">
+			<result property="l_cart_id" column="l_cart_id"/>
+			<result property="m_id" column="m_id"/>
+			<result property="lod_id" column="lod_id"/>
+			<result property="lod_name" column="lod_name"/>
+			<result property="lod_price" column="lod_price"/>
+			<result property="lod_address" column="lod_address"/>
+		</resultMap>
+		
+		
+		
+		
+		
+		<insert  id="lodCartInsert" parameterType="java.util.Map">
+		<selectKey keyProperty="l_cart_id" resultType="int" order="AFTER"> <!-- db에서 unit_id auto increment 사용 -->
+			select last_insert_id()
+		</selectKey>
+		<![CDATA[
+			insert into lodcart_tbl(
+				lod_id,
+				m_id,
+				lod_name,
+				lod_price,
+				lod_address)
+					values(
+						#{lod_id},
+						#{m_id},
+						(select lod_name from lod_tbl where lod_id  = #{lod_id}),
+						(select min(unit_price) from unit_tbl where lod_id = #{lod_id}),
+						(select lod_address from lod_tbl where lod_id = #{lod_id})
+						); 
+		]]>
+		</insert>
+		
+		
+		
+		
+		<!-- 사용자가 장바구니 등록 했는지 확인하는 용 -->
+		<select id="lodCart" parameterType="String" resultMap="lodCartResult">
+		select * from lodcart_tbl where m_id = #{m_id} and lod_id = #{lod_id}
+		</select>
+		
+		<delete id="lodCartDelete">
+			<![CDATA[
+					delete from lodcart_tbl where lod_id = #{lod_id} and m_id = #{m_id}
+			]]>
+		</delete>
+		
+		<select id="lodCartList" parameterType="String" resultMap="lodCartResult">
+		select * from lodcart_tbl where m_id = #{m_id}
+		</select>
+		
+		
+		
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.reserve">
+
+<resultMap  id="reserveResult" type="reserveVO">
+	<result property="R_id" column="R_id"/>
+	<result property="unit_name" column="unit_name"/>
+	<result property="checkIn_date" column="checkIn_date"/>
+	<result property="checkOut_date" column="checkOut_date"/>
+	<result property="adult" column="adult"/>
+	<result property="child" column="child"/>
+	<result property="unit_price" column="unit_price"/>
+	<result property="lod_id" column="lod_id"/>
+	<result property="unit_id" column="unit_id"/>
+	<result property="m_id" column="m_id"/>
+	<result property="member_name" column="member_name"/>
+	<result property="phone1" column="phone1"/>
+	<result property="phone2" column="phone2"/>
+	<result property="phone3" column="phone3"/>
+	<result property="reserve_date" column="reserve_date"/>
+</resultMap>
+
+
+<resultMap id="beforeResResult" type="beforeResVO">
+
+		<result property="lod_id" column="lod_id"/>
+		<result property="lod_name" column="lod_name"/>
+		<result property="lod_category" column="lod_category"/>
+		<result property="b_id" column="b_id"/>
+		<result property="unit_name" column="unit_name"/>
+		<result property="min_p" column="min_p"/>
+		<result property="max_p" column="max_p"/>
+		<result property="unit_price" column="unit_price"/>
+		
+</resultMap>
+
+
+
+
+
+
+
+
+<!-- adult, child 추가 해야댐-->
+<insert id="haveReserve" parameterType="java.util.Map">
+		<selectKey keyProperty="R_id" resultType="int" order="BEFORE"> 
+			select last_insert_id()
+		</selectKey>
+		<![CDATA[
+		insert into reserve_tbl(
+							m_id,
+							lod_id,
+							unit_id,
+							lod_name,
+							unit_name,
+							checkIn_date,
+							checkOut_date,
+							unit_price,
+							member_name,
+							phone1,
+							phone2,
+							phone3,
+							adult,
+							child)
+							values (
+									#{m_id},
+									#{lod_id},
+									#{unit_id},
+									#{lod_name},
+									#{unit_name},
+									#{checkIn_date},
+									#{checkOut_date},
+									#{unit_price},
+									#{member_name},
+									#{phone1},
+									#{phone2},
+									#{phone3},
+									#{adult},
+									#{child}
+									)					
+		
+		]]>
+	</insert>
+	
+	
+	
+	<select id="selectMyReserve" parameterType="reserveVO" resultMap="reserveResult">
+		<![CDATA[
+		select R_id, lod_name, unit_name,checkIn_date, checkOut_date, lod_id, member_name from reserve_tbl where m_id = #{m_id}
+		]]>
+	</select>
+	
+	
+	
+		<!-- myLod ReserveList -->
+		<select id="selectLodsReserveList" parameterType="reserveVO" resultMap="reserveResult">
+		<![CDATA[
+		select * from lod_tbl l, reserve_tbl r where l.lod_id  = r.lod_id and b_id = #{b_id} order by checkIn_date desc;
+		]]>
+	</select>
+	
+	<!-- if lod_name change >> reserve name change -->
+	<update id="lodNameChange">
+	update reserve_tbl 
+	<set>
+	<if test=" lod_name != '' and lod_name != null">
+	lod_name = #{lod_name}
+	</if>
+	where lod_id = #{lod_id}
+	</set>
+	
+	</update>
+	
+	
+	<!-- 금일 이후의 checkIn date 들을 불러옴 -->
+	<select id="dateRange" parameterType="reserveVO" resultMap="reserveResult">
+	<![CDATA[
+		select lod_id, unit_id, lod_name, unit_name, checkIn_date, checkOut_date  from reserve_tbl where lod_id = #{lod_id} and unit_name = #{unit_name} and checkIn_date > CURRENT_DATE();
+	]]>
+	</select>
+	
+	
+	<select id="reserveCon" parameterType="reserveVO"  resultMap="reserveResult">	
+	<![CDATA[
+		select lod_id, unit_id, lod_name, unit_name, checkIn_date, checkOut_date  from reserve_tbl where lod_id = #{lod_id}  and m_id = #{m_id} and checkIn_date <= CURRENT_DATE();
+		]]>
+		</select>
+		
+	<delete id="reserve_remove" parameterType="int">
+		delete from reserve_tbl where R_id = #{R_id}
+	</delete> 
+	
+	
+</mapper>

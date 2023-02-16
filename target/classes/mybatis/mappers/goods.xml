@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.goods">
+<!-- 리절트 맵 정의 -->	
+	<resultMap id="goodsResult" type="GoodsVO">
+		<result property="goods_no" column="goods_no" />
+		<result property="goods_cate" column="goods_cate" />
+		<result property="goods_name" column="goods_name" />
+		<result property="file_name" column="file_name" />
+		<result property="goods_brand" column="goods_brand" />
+		<result property="goods_price" column="goods_price" />
+		<result property="goods_discount" column="goods_discount" />	
+		<result property="goods_info" column="goods_info" />
+		<result property="goods_addDate" column="goods_addDate" />
+	</resultMap>	
+	<resultMap  id="goodsImgResult" type="goodsImgFileVO">
+		<result property="GoodsImgid" column="GoodsImgid" />
+		<result property="file_name" column="file_name" />
+		<result property="imgAddDate" column="imgAddDate" />
+		<result property="goods_no" column="goods_no" />
+		<result property="fileType" column="fileType" />
+	</resultMap>
+	<resultMap  id="goodsCateResult" type="goodsCateVO">
+		<result property="goods_no" column="goods_no" />
+		<result property="goods_cate" column="goods_cate" />
+		<result property="goods_name" column="goods_name" />
+		<result property="file_name" column="file_name" />
+		<result property="goods_brand" column="goods_brand" />
+		<result property="goods_price" column="goods_price" />
+		<result property="goods_discount" column="goods_discount" />	
+		<result property="goods_info" column="goods_info" />
+		<result property="goods_addDate" column="goods_addDate" />
+		<result property="GoodsImgid" column="GoodsImgid" />
+		<result property="imgAddDate" column="imgAddDate" />
+		<result property="fileType" column="fileType" />
+	</resultMap>
+	
+	
+	<select id="selectGoodsDetail" resultMap="goodsResult" parameterType="String"  >
+	    <![CDATA[
+		    select *
+          	from goodslist_tbl
+		    where goods_no=#{goods_no}
+	        
+    	]]>
+	</select>
+	
+	<select id="selectGoodsDetailImage" resultMap="goodsImgResult" parameterType="String"  >
+	    <![CDATA[
+		    select *
+          	from goods_img_tbl 
+		    where goods_no= #{goods_no}
+    	]]>
+	</select>
+	
+	<select id="goodsListCount" resultType="Integer" >
+		<![CDATA[
+			select count(goods_no)
+			from goodslist_tbl
+			where goods_no > 0
+		]]>
+	</select>
+	
+	<select id="selectCategory" parameterType="java.util.HashMap" resultMap="goodsCateResult">
+		<![CDATA[
+			select *
+			from goodslist_tbl g, goods_img_tbl i
+			where g.goods_no = i.goods_no
+			and i.fileType = 'main'
+			order by g.goods_no desc
+			limit #{rowStart}, #{perPageNum}
+	]]>
+	</select>
+	
+	<select id="selectGoodsSearch" parameterType="String" resultMap="goodsCateResult">
+		select *
+		from goodslist_tbl g, goods_img_tbl i
+		where g.goods_name like CONCAT('%',#{keyword},'%')
+        and g.goods_no = i.goods_no
+        and i.fileType = 'main'
+	</select>
+
+</mapper>

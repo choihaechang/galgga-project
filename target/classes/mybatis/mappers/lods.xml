@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.lods">
+
+	<resultMap id="lodsResult" type="LodVO">
+		<result property="lod_id" column="lod_id"/>
+		<result property="lod_name" column="lod_name"/>
+		<result property="post_num" column="post_num"/>
+		<result property="lod_address" column="lod_address"/>
+		<result property="lod_category" column="lod_category"/>
+		<result property="lod_starpoint" column="lod_starpoint"/>
+		<result property="lod_info" column="lod_info"/>
+		<result property="add_date" column="add_date"/>
+		<result property="state" column="state"/>
+		<result property="b_id" column="b_id"/>
+		<result property="refund" column="refund"/>
+		
+		<result property="lod_option1" column="lod_option1"/>
+		<result property="lod_option2" column="lod_option2"/>
+		<result property="lod_option3" column="lod_option3"/>
+		<result property="lod_option4" column="lod_option4"/>
+		<result property="lod_option5" column="lod_option5"/>
+		<result property="lod_option6" column="lod_option6"/>
+		
+		<result property="lod_option1_price" column="lod_option1_price"/>
+		<result property="lod_option2_price" column="lod_option2_price"/>
+		<result property="lod_option3_price" column="lod_option3_price"/>
+		<result property="lod_option4_price" column="lod_option4_price"/>	
+		<result property="lod_option5_price" column="lod_option5_price"/>
+		<result property="lod_option6_price" column="lod_option6_price"/>
+		
+		<result property="lod_option1_info" column="lod_option1_info"/>
+		<result property="lod_option2_info" column="lod_option2_info"/>
+		<result property="lod_option3_info" column="lod_option3_info"/>
+		<result property="lod_option4_info" column="lod_option4_info"/>
+		<result property="lod_option5_info" column="lod_option5_info"/>
+		<result property="lod_option6_info" column="lod_option6_info"/>
+		
+	</resultMap>
+	
+	
+	<resultMap id="unitsResult" type="UnitVO">
+		<result property="unit_id" column="unit_id"/>
+		<result property="lod_id" column="lod_id"/>
+		<result property="unit_name" column="unit_name"/>
+		<result property="unit_category" column="unit_category"/>
+		<result property="unit_extent" column="unit_extent"/>
+		<result property="starpoint" column="starpoint"/>
+		<result property="unit_price" column="unit_price"/>
+		<result property="unit_info" column="unit_info"/>
+		<result property="min_p" column="min_p"/>
+		<result property="max_p" column="max_p"/>
+
+		
+	</resultMap>
+	
+	<resultMap id="lodImgResult" type="LodImgFileVO">
+		<result property="lodImg_id" column="lodImg_id"/>
+		<result property="lod_id" column="lod_id"/>
+		<result property="lod_imgName" column="lod_imgName"/>
+		<result property="imgType" column="imgType"/>
+		<result property="imgAddDate" column="imgAddDate"/>
+	</resultMap>
+	
+	<resultMap id="unitImgResult" type="UnitImgFileVO">
+		<result property="unitImg_id" column="unitImg_id"/>
+		<result property="unit_id" column="unit_id"/>
+		<result property="unit_imgName" column="unit_imgName"/>
+		<result property="imgType" column="imgType"/>
+		<result property="imgAddDate" column="imgAddDate"/>
+	</resultMap>
+	
+	<resultMap id="beforeResResult" type="beforeResVO">
+
+		<result property="lod_id" column="lod_id"/>
+		<result property="lod_name" column="lod_name"/>
+		<result property="lod_category" column="lod_category"/>
+		<result property="m_id" column="m_id"/>
+		<result property="unit_name" column="unit_name"/>
+		<result property="min_p" column="min_p"/>
+		<result property="max_p" column="max_p"/>
+		<result property="adult" column="adult"/>
+		<result property="child" column="child"/>
+		<result property="unit_price" column="unit_price"/>
+		<result property="lod_option1" column="lod_option1"/>
+		<result property="lod_option2" column="lod_option2"/>
+		<result property="lod_option3" column="lod_option3"/>
+		<result property="lod_option4" column="lod_option4"/>
+		<result property="lod_option5" column="lod_option5"/>
+		<result property="lod_option6" column="lod_option6"/>
+		
+		<result property="lod_option1_price" column="lod_option1_price"/>
+		<result property="lod_option2_price" column="lod_option2_price"/>
+		<result property="lod_option3_price" column="lod_option3_price"/>
+		<result property="lod_option4_price" column="lod_option4_price"/>	
+		<result property="lod_option5_price" column="lod_option5_price"/>
+		<result property="lod_option6_price" column="lod_option6_price"/>
+		
+		<result property="lod_option1_info" column="lod_option1_info"/>
+		<result property="lod_option2_info" column="lod_option2_info"/>
+		<result property="lod_option3_info" column="lod_option3_info"/>
+		<result property="lod_option4_info" column="lod_option4_info"/>
+		<result property="lod_option5_info" column="lod_option5_info"/>
+		<result property="lod_option6_info" column="lod_option6_info"/>
+		
+
+</resultMap>
+	
+	
+<resultMap id="mainValueImgResult" type="mainListVO">
+		<result property="lod_name" column="lod_name"/>
+		<result property="lod_id" column="lod_id"/>
+		<result property="lod_imgName" column="lod_imgName"/>
+		<result property="lod_starpoint" column="lod_starpoint"/>
+		<result property="lod_category" column="lod_category"/>
+		<result property="lod_price" column="lod_price"/>
+		<result property="lod_address" column="lod_address"/>
+	</resultMap>	
+	
+	
+	<resultMap id="selectCate" type="cateVO">
+		<result property="lod_id" column="lod_id"/>
+		<result property="lod_name" column="lod_name"/>
+		<result property="lod_address" column="lod_address"/>
+		<result property="lod_category" column="lod_category"/>
+		<result property="lod_imgName" column="lod_imgName"/>
+		<result property="imgType" column="imgType"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	
+
+	<insert id="insertNewLods" parameterType="java.util.Map">
+		<selectKey keyProperty="lod_id" resultType="int" order="AFTER"> <!-- db에서 lod_id auto increment 사용 -->
+			select last_insert_id()
+		</selectKey>
+		<![CDATA[
+			insert into lod_tbl(
+				
+				lod_name,
+				post_num,
+				lod_address,
+				lod_category,
+				lod_starpoint,
+				lod_info,
+				b_id,
+				refund,
+				lod_option1,
+				lod_option1_price,
+				lod_option1_info,
+				
+				lod_option2,
+				lod_option2_price,
+				lod_option2_info,
+				
+				lod_option3,
+				lod_option3_price,
+				lod_option3_info,
+				
+				lod_option4,
+				lod_option4_price,
+				lod_option4_info,
+				
+				lod_option5,
+				lod_option5_price,
+				lod_option5_info,
+				
+				lod_option6,
+				lod_option6_price,
+				lod_option6_info
+				
+				
+						)
+					values(
+						
+						#{lod_name},
+						#{post_num},
+						#{lod_address},
+						#{lod_category},
+						#{lod_starpoint},
+						#{lod_info},
+						#{b_id},
+						#{refund},
+						
+						#{lod_option1},
+						#{lod_option1_price},
+						#{lod_option1_info},
+						
+						#{lod_option2},
+						#{lod_option2_price},
+						#{lod_option2_info},
+						
+						#{lod_option3},
+						#{lod_option3_price},
+						#{lod_option3_info},
+						
+						#{lod_option4},
+						#{lod_option4_price},
+						#{lod_option4_info},
+						
+						#{lod_option5},
+						#{lod_option5_price},
+						#{lod_option5_info},
+						
+						#{lod_option6},
+						#{lod_option6_price},
+						#{lod_option6_info}
+									);
+			
+		]]>
+		
+		
+	</insert>
+	
+	<insert id="insertNewUnits" parameterType="java.util.Map">
+	<selectKey keyProperty="unit_id" resultType="int" order="AFTER"> <!-- db에서 unit_id auto increment 사용 -->
+			select last_insert_id()
+		</selectKey>
+		<!-- unit 에서도 lod_id를 받아서 서로 연결 시켜 줄 예정 -->
+		<![CDATA[							
+			insert into unit_tbl(
+				
+				lod_id,													
+				unit_name,
+				unit_category,
+				unit_extent,
+				unit_price,
+				unit_info,
+				min_p,
+				max_p
+				
+				)
+					values(
+						
+						#{lod_id},
+						#{unit_name},
+						#{unit_category},
+						#{unit_extent},
+						#{unit_price},
+						#{unit_info},
+						#{min_p},
+						#{max_p}
+						
+						
+						)
+		]]>
+	</insert>
+	
+	<insert id="insertNewLodImg" parameterType="java.util.Map">
+		<![CDATA[
+			insert into lod_img_tbl(
+					lodImg_id,
+					lod_id,
+					lod_imgName,
+					imgType
+					)
+						values(
+							#{lodImg_id},
+							#{lod_id},
+							#{lod_imgName},
+							#{imgType}
+							
+										)
+							
+		]]>
+	
+	</insert>
+	
+	<insert id="insertNewUnitImg" parameterType="java.util.Map">
+		<![CDATA[
+			insert into unit_img_tbl(
+					unitImg_id,
+					unit_id,
+					unit_imgName,
+					imgType
+					)
+						values(
+						#{unitImg_id},
+						#{unit_id},
+						#{unit_imgName},
+						#{imgType}
+									)
+		]]>
+	</insert>
+	
+
+	
+	
+
+	
+	
+	<!-- 메인 페이지 이미지 띄우는 용도 (평점순) -->
+	<select id="mainpage_value" parameterType="String" resultMap="mainValueImgResult">
+		<![CDATA[
+				select lod_name, lod_starpoint, u.unit_id,  l.lod_id, lod_category, lod_address, lod_imgName, min(unit_price) as 'lod_price' 
+								from lod_tbl l, lod_img_tbl li, unit_tbl u where l.lod_id = li.lod_id and l.lod_id = u.lod_id and li.imgType like "%main" 
+											group by lod_id order by lod_starpoint desc;
+		]]>
+	</select>
+	
+	
+		<!-- 메인 페이지 이미지 띄우는 용도 (예약 많은 순) -->
+	<select id="mainpage_reserve" parameterType="String" resultMap="mainValueImgResult">
+		<![CDATA[
+				select r.lod_name, l.lod_id, l.lod_category, l.lod_starpoint, l.lod_address, li.lod_imgName, count(r.lod_id) as count, min(unit_price) as 'lod_price'
+							from ((reserve_tbl r inner join lod_tbl l on r.lod_id =l.lod_id) inner join lod_img_tbl li on r.lod_id = li.lod_id and li.imgType like "%main")
+											group by l.lod_id order by count desc;
+		]]>
+	</select>
+	
+	<!-- 카테고리 campping 검색 -->
+	<select id="selectCategory" parameterType="String" resultMap="mainValueImgResult">
+		<![CDATA[
+	select * from lod_tbl l, lod_img_tbl li where lod_category = #{category} and li.imgType like "%main" and l.lod_id =li.lod_id;
+	]]>
+	</select>
+	
+
+	
+	
+	
+	
+		<!-- 사업자가 본인이 등록한 숙소를 확인 가능 단순 List로 표시-->
+	<select id="selectMyLods" parameterType="lodVO" resultMap="lodsResult">
+		<![CDATA[
+		select lod_name, lod_address, lod_category, lod_info, add_date, state, lod_id from lod_tbl where b_id =#{b_id}
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<!-- Lod Detail 정보 보여줌, main 이미지도 같이 보여줌  -->
+	<select id="selectLodInfo" parameterType="String" resultMap="lodsResult">
+		<![CDATA[
+		select * from lod_tbl where lod_id = #{lod_id}
+		
+		]]>
+	</select>
+	
+
+	
+	<!-- lod의 일반 이미지 들을 보여줌, jsp및 다른 곳에는 아직 추가 안해둠 -->
+	<select id="selectLodComImgInfo" parameterType="String" resultMap="lodImgResult">
+		<![CDATA[
+		select * from lod_img_tbl where lod_id = #{lod_id}
+		]]>
+	</select>
+	
+	
+	
+
+	
+	<select id="selectUnitInfo" parameterType="String" resultMap="unitsResult">
+		<![CDATA[
+		select * from unit_tbl where lod_id = #{lod_id}
+		]]>
+	</select>
+
+
+	<select id="selectUnitImgInfo" parameterType="String" resultMap="unitImgResult">
+		<![CDATA[
+		
+		select * from unit_img_tbl ui right outer join unit_tbl u on u.unit_id = ui.unit_id where u.lod_id = #{lod_id} and imgType like "%main"
+		
+		]]>
+	</select>
+		
+	<select id="selectUnitImgInfo_com" parameterType="String" resultMap="unitImgResult">
+		<![CDATA[
+		select * from unit_img_tbl ui right outer join unit_tbl u on u.unit_id = ui.unit_id where u.lod_id = #{lod_id} and imgType like "%common%"
+		]]>
+	</select>
+	
+	<select id="reserveData" parameterType="String" resultMap="beforeResResult">
+		<![CDATA[
+		select * from lod_tbl l inner join unit_tbl u on l.lod_id = u.lod_id and  u.unit_name = #{unit_name} where l.lod_id = #{lod_id}
+		]]>
+	</select>
+
+
+
+
+
+	
+	<update id="lodsInfoUpdate" >
+	
+		update lod_tbl 
+		<set>
+		<if test=" lod_name != '' and lod_name != null">
+		lod_name = #{lod_name}, 
+		</if>
+		<if test=" lod_info != '' and lod_info != null">
+		lod_info = #{lod_info} 
+		</if>		
+		
+		where lod_id = #{lod_id}                   
+	
+		</set>
+	</update>
+	
+	
+	<!-- for update -->
+	
+	<select id="unitInfo" parameterType="String" resultMap="unitsResult">
+		<![CDATA[
+		select * from unit_tbl where unit_id = #{unit_id}
+		]]>
+	</select>
+	
+	<select id="unitImgInfo" parameterType="String" resultMap="unitImgResult">
+		<![CDATA[
+		select * from unit_img_tbl ui, unit_tbl u where u.unit_id = ui.unit_id and u.unit_id = #{unit_id}
+		]]>
+	</select>
+	
+	<!--  -->
+	
+	
+		
+	<update id="lodImgUpdate" parameterType="LodImgFileVO">
+	
+		update lod_img_tbl 
+		<set>
+		<if test=" lod_imgName!='' and lod_imgName!=null">
+		lod_imgName = #{lod_imgName} 
+		</if>
+		where lod_id = #{lod_id}
+	
+	</set>
+	</update>
+	
+
+	<update id="unitsInfoUpdate" >
+		update unit_tbl 
+		<set>
+		<if test=" unit_name != '' and unit_name != null">
+		unit_name = #{unit_name}, 
+		</if>
+		<if test=" unit_category != '' and unit_category != null">
+		unit_category = #{unit_category}, 
+		</if>
+		<if test=" unit_extent != '' and unit_extent != null">
+		unit_extent = #{unit_extent}, 
+		</if>
+		<if test=" min_p != '' and min_p != null">
+		min_p = #{min_p}, 
+		</if>
+		<if test=" max_p != '' and max_p != null">
+		max_p = #{max_p}, 
+		</if>
+		<if test=" unit_info != '' and unit_info != null">
+		unit_info = #{unit_info}, 
+		</if>	
+		<if test=" unit_price != '' and unit_price != null">
+		unit_price = #{unit_price}, 
+		</if>		
+		</set>
+		where unit_id = #{unit_id} 
+	</update>
+
+
+	<select id="selectCate" parameterType="String" resultMap="selectCate">
+				select l.lod_id,  l.lod_name,l.lod_address, l.lod_category,l.lod_starpoint, li.lod_imgName, li.imgType, min(unit_price) as "lod_price" from  lod_tbl l, lod_img_tbl li, unit_tbl u 
+					where li.lod_id=l.lod_id and l.lod_id=u.lod_id and lod_category = #{lod_category} and li.imgType like "%main" group by lod_id;
+	
+	
+	</select>
+	
+
+	<update id="refundUpdate">
+		<![CDATA[
+				update lod_tbl set refund = #{refund} where lod_id = #{lod_id}
+				
+		]]>
+	
+	</update>
+	
+	
+	<!-- 숙소 검색 -->
+	<select id="selectLodSearch" parameterType="String" resultMap="selectCate">
+		select l.lod_id, l.lod_name, l.lod_address, i.lod_imgName, min(u.unit_price) as lod_price
+		from lod_tbl l, lod_img_tbl i, unit_tbl u 
+		where l.lod_name like CONCAT('%',#{keyword},'%')
+        and l.lod_id = u.lod_id
+        and l.lod_id = i.lod_id
+		group by lod_id;
+	</select>
+	
+</mapper>

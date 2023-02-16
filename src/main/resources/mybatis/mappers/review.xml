@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.review">
+<resultMap id="reviewResult" type="reviewVO">
+	    <result property="review_rno" column="review_rno" />
+		<result property="m_id" column="m_id" />
+		<result property="lod_id" column="lod_id" />
+		<result property="review_title" column="review_title" />
+		<result property="review_img" column="review_img" />
+		<result property="review_info" column="review_info" />
+		<result property="starpoint" column="starpoint" />
+		<result property="re_writeDate" column="re_writeDate" />	
+</resultMap>
+
+<!-- 글 작성 -->
+	<insert id="insert" >
+	   INSERT INTO REVIEWLIST_TBL(   review_rno 
+	   						  , m_id
+	   					      , review_title
+	   					      , review_img
+	   					      , review_info)
+	                 VALUES( 	#{review_rno},
+	                   			#{m_id},
+	                 		    #{review_title},
+	                 		    #{review_img},
+	                 		    #{review_info})
+   
+  	 </insert>
+  	 
+  	 <!-- 목록 -->
+  	 <select id="list" resultType="reviewVO">
+		SELECT   review_rno
+			   , m_id 
+			   , review_title
+			   , review_info
+			   , re_writeDate
+		  FROM REVIEWLIST_TBL
+		  ORDER BY BNO DESC
+	</select>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.member">
+	<!-- 리절트 맵 정의 -->
+	<resultMap id="memberResult" type="MemberVO">
+		<result property="m_id" column="m_id" />
+		<result property="member_id" column="member_id" />
+		<result property="member_pw" column="member_pw" />
+		<result property="member_name" column="member_name" />
+
+		<result property="birth_day" column="birth_day" />
+		<result property="gender" column="gender" />
+
+		<result property="phone1" column="phone1" />
+		<result property="phone2" column="phone2" />
+		<result property="phone3" column="phone3" />
+
+		<result property="email1" column="email1" />
+		<result property="email2" column="email2" />
+		<result property="marketing" column="marketing" />
+
+		<result property="address" column="address" />
+		<result property="joinDate" column="joinDate" />
+		<result property="post_num" column="post_num" />
+		<result property="totalemail" column="totalemail" />
+
+	</resultMap>
+
+	<select id="login" resultType="memberVO"
+		parameterType="java.util.Map">
+	    <![CDATA[
+			select * from member_tbl
+			 where member_id=#{member_id}		
+			 
+		]]>
+	</select>
+
+	<update id="memberUpdate">
+		update member_tbl
+		<set>
+			<if test="member_pw!='' and member_pw!=null">
+				member_pw = #{member_pw},
+			</if>
+
+			<if test="member_name!='' and member_name!=null">
+				member_name = #{member_name},
+			</if>
+
+			<if test="phone2!='' and phone2!=null">
+				phone2 = #{phone2},
+			</if>
+
+			<if test="phone3!='' and phone2!=null">
+				phone3 = #{phone3},
+			</if>
+
+			<if test="email1!='' and email1!=null">
+				email1 = #{email1},
+			</if>
+
+			<if test="email2!='' and email2!=null">
+				email2 = #{email2},
+			</if>
+
+			<if test="address!='' and address!=null">
+				address = #{address},
+			</if>
+
+			<if test="post_num!='' and post_num!=null">
+				post_num = #{post_num},
+			</if>
+			
+			<if test="totalemail!='' and totalemail!=null">
+				totalemail = #{totalemail}
+			</if>
+		</set>
+		where member_id = #{member_id}
+
+	</update>
+
+	<select id="selectOverlappedID" parameterType="String"
+		resultType="String">
+		select case count(*) when 1 then 'true'when 0 then 'false'
+		end
+		from member_tbl
+		where member_id = #{id}
+	</select>
+
+	<!-- 패스워드 체크 -->
+	<select id="passChk" resultType="int">
+		SELECT COUNT(*) FROM MEMBER_TBL
+		WHERE member_id = #{member_id}
+		AND member_pw = #{member_pw}
+	</select>
+
+	<insert id="insertNewMember" parameterType="memberVO">
+  <![CDATA[
+    	insert into member_tbl(m_id,
+    						   member_id,
+				 			   member_pw,
+                               member_name,      
+                               birth_day,
+                               gender,
+                               phone1,
+                               phone2,
+                               phone3,
+                               email1,
+                               email2,
+                               marketing,
+                               address,
+                               post_num,
+                               totalemail)
+                                
+							 values(#{m_id},
+							 		#{member_id},
+									#{member_pw},
+									#{member_name},
+                                   	#{birth_day},                            
+                                    #{gender},
+                                    #{phone1},
+                                    #{phone2},
+                                    #{phone3},
+                                    #{email1},
+                                    #{email2},
+                                    #{marketing},
+                                    #{address},
+                                    #{post_num},
+                                    #{totalemail})
+                                                                         
+   ]]>
+	</insert>
+
+
+	<delete id="memberDelete">
+		delete from member_tbl where member_id=#{member_id}
+	</delete>
+
+	<!-- 유효성 id검사 -->
+	<select id="findIdCheck" resultType="int">
+		select count(*) from
+		member_tbl where totalemail = #{totalemail}
+	</select>
+
+	<!-- 아이디 찾기 -->
+	<select id="findId" resultType="memberVO">
+		select member_id from member_tbl
+		where totalemail = #{totalemail}
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<update id="findPw">
+	update member_tbl set member_pw = #{member_pw} where totalemail =
+		#{totalemail} and member_id = #{member_id}
+	</update>
+	
+	<!-- 유효성 pw검사 -->
+	<select id="findPwCheck" resultType="int">
+		select count(*) from member_tbl where member_id = #{member_id} and totalemail = #{totalemail}
+	</select>
+	
+</mapper>
